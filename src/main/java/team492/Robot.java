@@ -312,8 +312,8 @@ public class Robot extends FrcRobotBase
                     //
                     double lfDriveEnc = robotDrive.lfDriveMotor.getPosition();
                     double rfDriveEnc = robotDrive.rfDriveMotor.getPosition();
-                    double lbDriveEnc = robotDrive.lbDriveMotor.getPosition();
-                    double rbDriveEnc = robotDrive.rbDriveMotor.getPosition();
+                    double lbDriveEnc = robotDrive.lbDriveMotor != null? robotDrive.lbDriveMotor.getPosition(): 0.0;
+                    double rbDriveEnc = robotDrive.rbDriveMotor != null? robotDrive.rbDriveMotor.getPosition(): 0.0;
 
                     dashboard.displayPrintf(
                         8, "DriveBase: lf=%.0f, rf=%.0f, lb=%.0f, rb=%.0f, avg=%.0f",

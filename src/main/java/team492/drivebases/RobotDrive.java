@@ -124,15 +124,27 @@ public class RobotDrive
                 // Disable ramp rate control in autonomous.
                 lfDriveMotor.motor.configOpenloopRamp(0.0);
                 rfDriveMotor.motor.configOpenloopRamp(0.0);
-                lbDriveMotor.motor.configOpenloopRamp(0.0);
-                rbDriveMotor.motor.configOpenloopRamp(0.0);
+                if (lbDriveMotor != null)
+                {
+                    lbDriveMotor.motor.configOpenloopRamp(0.0);
+                }
+                if (rbDriveMotor != null)
+                {
+                    rbDriveMotor.motor.configOpenloopRamp(0.0);
+                }
             }
             else
             {
                 lfDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
                 rfDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
-                lbDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
-                rbDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
+                if (lbDriveMotor != null)
+                {
+                    lbDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
+                }
+                if (rbDriveMotor != null)
+                {
+                    rbDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
+                }
 
                 if (runMode == RunMode.TELEOP_MODE && endOfAutoRobotPose != null)
                 {

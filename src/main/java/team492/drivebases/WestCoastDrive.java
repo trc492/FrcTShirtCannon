@@ -49,12 +49,14 @@ public class WestCoastDrive extends RobotDrive
         super(robot);
 
         lfDriveMotor = createDriveMotor("lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, true);
-        lbDriveMotor = createDriveMotor("lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, true);
         rfDriveMotor = createDriveMotor("rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
-        rbDriveMotor = createDriveMotor("rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, false);
-
-        lbDriveMotor.followMotor(lfDriveMotor);
-        rbDriveMotor.followMotor(rfDriveMotor);
+        if (RobotParams.Preferences.use4WheelWestCoastDrive)
+        {
+            lbDriveMotor = createDriveMotor("lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, true);
+            rbDriveMotor = createDriveMotor("rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, false);
+            lbDriveMotor.followMotor(lfDriveMotor);
+            rbDriveMotor.followMotor(rfDriveMotor);
+        }
 
         driveBase = new TrcSimpleDriveBase(lfDriveMotor, rfDriveMotor, gyro);
         driveBase.setOdometryScales(RobotParams.WCD_INCHES_PER_COUNT);
@@ -83,11 +85,20 @@ public class WestCoastDrive extends RobotDrive
 
         if (robot.pdp != null)
         {
-            robot.pdp.registerEnergyUsed(
-                new FrcPdp.Channel(RobotParams.PDP_CHANNEL_LEFT_FRONT_DRIVE, "lfDriveMotor"),
-                new FrcPdp.Channel(RobotParams.PDP_CHANNEL_LEFT_BACK_DRIVE, "lbDriveMotor"),
-                new FrcPdp.Channel(RobotParams.PDP_CHANNEL_RIGHT_FRONT_DRIVE, "rfDriveMotor"),
-                new FrcPdp.Channel(RobotParams.PDP_CHANNEL_RIGHT_BACK_DRIVE, "rbDriveMotor"));
+            if (RobotParams.Preferences.use4WheelWestCoastDrive)
+            {
+                robot.pdp.registerEnergyUsed(
+                    new FrcPdp.Channel(RobotParams.PDP_CHANNEL_LEFT_FRONT_DRIVE, "lfDriveMotor"),
+                    new FrcPdp.Channel(RobotParams.PDP_CHANNEL_RIGHT_FRONT_DRIVE, "rfDriveMotor"),
+                    new FrcPdp.Channel(RobotParams.PDP_CHANNEL_LEFT_BACK_DRIVE, "lbDriveMotor"),
+                    new FrcPdp.Channel(RobotParams.PDP_CHANNEL_RIGHT_BACK_DRIVE, "rbDriveMotor"));
+            }
+            else
+            {
+                robot.pdp.registerEnergyUsed(
+                    new FrcPdp.Channel(RobotParams.PDP_CHANNEL_LEFT_FRONT_DRIVE, "lfDriveMotor"),
+                    new FrcPdp.Channel(RobotParams.PDP_CHANNEL_RIGHT_FRONT_DRIVE, "rfDriveMotor"));
+            }
         }
         //
         // Create and initialize PID controllers.

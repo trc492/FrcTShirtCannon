@@ -61,6 +61,7 @@ public class RobotParams
         public static final boolean useAntiTipping              = false;
         public static final boolean useSteeringCANCoder         = false;
         public static final boolean useSteeringAnalogEncoder    = true;
+        public static final boolean use4WheelWestCoastDrive     = false;
         // Subsystems
         public static final boolean useSubsystems               = true;
         // Miscellaneous

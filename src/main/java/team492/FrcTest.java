@@ -445,8 +445,8 @@ public class FrcTest extends FrcTeleOp
                 case Y_TIMED_DRIVE:
                     double lfEnc = robot.robotDrive.lfDriveMotor.getPosition();
                     double rfEnc = robot.robotDrive.rfDriveMotor.getPosition();
-                    double lbEnc = robot.robotDrive.lbDriveMotor.getPosition();
-                    double rbEnc = robot.robotDrive.rbDriveMotor.getPosition();
+                    double lbEnc = robot.robotDrive.lbDriveMotor != null? robot.robotDrive.lbDriveMotor.getPosition(): 0.0;
+                    double rbEnc = robot.robotDrive.rbDriveMotor != null? robot.robotDrive.rbDriveMotor.getPosition(): 0.0;
                     robot.dashboard.displayPrintf(9, "Enc:lf=%.0f,rf=%.0f", lfEnc, rfEnc);
                     robot.dashboard.displayPrintf(10, "Enc:lb=%.0f,rb=%.0f", lbEnc, rbEnc);
                     robot.dashboard.displayPrintf(11, "EncAverage=%f", (lfEnc + rfEnc + lbEnc + rbEnc) / 4.0);
@@ -525,10 +525,12 @@ public class FrcTest extends FrcTeleOp
             robot.robotDrive.driveBase.getFieldVelocity());
         robot.dashboard.displayPrintf(11, "DriveEncoders: lf=%.1f,rf=%.1f,lb=%.1f,rb=%.1f",
             robot.robotDrive.lfDriveMotor.getPosition(), robot.robotDrive.rfDriveMotor.getPosition(),
-            robot.robotDrive.lbDriveMotor.getPosition(), robot.robotDrive.rbDriveMotor.getPosition());
+            robot.robotDrive.lbDriveMotor != null? robot.robotDrive.lbDriveMotor.getPosition(): 0.0,
+            robot.robotDrive.rbDriveMotor != null? robot.robotDrive.rbDriveMotor.getPosition(): 0.0);
         robot.dashboard.displayPrintf(12, "DrivePower: lf=%.2f,rf=%.2f,lb=%.2f,rb=%.2f",
             robot.robotDrive.lfDriveMotor.getMotorPower(), robot.robotDrive.rfDriveMotor.getMotorPower(),
-            robot.robotDrive.lbDriveMotor.getMotorPower(), robot.robotDrive.rbDriveMotor.getMotorPower());
+            robot.robotDrive.lbDriveMotor != null? robot.robotDrive.lbDriveMotor.getMotorPower(): 0.0,
+            robot.robotDrive.rbDriveMotor != null? robot.robotDrive.rbDriveMotor.getMotorPower(): 0.0);
         //
         // Display other subsystems and sensor info.
         //
