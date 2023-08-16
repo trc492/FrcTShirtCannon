@@ -66,6 +66,7 @@ public class RobotParams
         
         // Subsystems
         public static final boolean useSubsystems               = true;
+        public static final boolean tilterIsInverted            = false;
         // Miscellaneous
         public static final boolean useTraceLog                 = true;
         // Status Update
@@ -353,5 +354,12 @@ public class RobotParams
     //
     // Other subsystems.
     //
+    
+    // Tilter Subsystem
+    public static final double TILTER_KP                      = 0.5;
+    public static final double TILTER_KI                      = 0;
+    public static final double TILTER_KD                      = 0;
+    public static final double TILTER_KF                      = 0;
+    public static final double TILTER_TOLERANCE               = 0;
 
 }   //class RobotParams

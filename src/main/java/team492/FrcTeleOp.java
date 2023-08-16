@@ -138,6 +138,8 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 //
                 if (RobotParams.Preferences.useSubsystems)
                 {
+                    double tilterRotPower =  robot.driverController.getRightTriggerAxis() - robot.driverController.getLeftTriggerAxis();
+                    robot.tilter.setPidPower(tilterRotPower, true);
                 }
             }
             //
