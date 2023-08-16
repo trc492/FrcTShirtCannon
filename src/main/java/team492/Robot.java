@@ -22,15 +22,19 @@
 
 package team492;
 
+import java.lang.reflect.Parameter;
 import java.util.Locale;
 import TrcCommonLib.trclib.TrcDbgTrace;
+import TrcCommonLib.trclib.TrcPidActuator;
 import TrcCommonLib.trclib.TrcPidController;
 import TrcCommonLib.trclib.TrcPose2D;
 import TrcCommonLib.trclib.TrcRobotBattery;
 import TrcCommonLib.trclib.TrcTimer;
 import TrcCommonLib.trclib.TrcRobot.RunMode;
 import TrcFrcLib.frclib.FrcAHRSGyro;
+import TrcFrcLib.frclib.FrcCANTalon;
 import TrcFrcLib.frclib.FrcDashboard;
+import TrcFrcLib.frclib.FrcDigitalInput;
 import TrcFrcLib.frclib.FrcJoystick;
 import TrcFrcLib.frclib.FrcMatchInfo;
 import TrcFrcLib.frclib.FrcPdp;
@@ -89,6 +93,9 @@ public class Robot extends FrcRobotBase
     //
     // Other subsystems.
     //
+    public FrcCANTalon shooterMotor;
+    public FrcDigitalInput shooterLowerLimit, shooterUpperLimit;
+    public TrcPidActuator shooterActuator;
 
     /**
      * Constructor: Create an instance of the object.
@@ -176,6 +183,10 @@ public class Robot extends FrcRobotBase
         //
         if (RobotParams.Preferences.useSubsystems)
         {
+            shooterMotor = new FrcCANTalon("shooterMotor", RobotParams.CANID_SHOOTER_MOTOR);
+            shooterLowerLimit = new FrcDigitalInput("shooterLowerLimit", RobotParams.DIN_SHOOTER_LOWER_LIMIT);
+            shooterUpperLimit = new FrcDigitalInput("shooterUpperLimit", RobotParams.DIN_SHOOTER_UPPER_LIMIT);
+            //shooterActuator = new TrcPidActuator("shooterActuator", shooterMotor, shooterLowerLimit, shooterUpperLimit, Parameter);
         }
         //
         // Miscellaneous.

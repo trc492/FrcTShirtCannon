@@ -62,6 +62,7 @@ public class RobotParams
         public static final boolean useSteeringCANCoder         = false;
         public static final boolean useSteeringAnalogEncoder    = true;
         public static final boolean use4WheelWestCoastDrive     = false;
+        
         // Subsystems
         public static final boolean useSubsystems               = true;
         // Miscellaneous
@@ -156,7 +157,7 @@ public class RobotParams
     public static final int CANID_PDP                           = 31;
 
     // Subsystem CAN IDs.
-
+    public static final int CANID_SHOOTER_MOTOR                  = 32;
     //
     // PDP Channels.
     //
@@ -190,7 +191,8 @@ public class RobotParams
     //
     // Digital Input/Output ports.
     //
-
+    public static final int DIN_SHOOTER_UPPER_LIMIT               = 4;
+    public static final int DIN_SHOOTER_LOWER_LIMIT               = 5;
     //
     // PWM channels.
     //
