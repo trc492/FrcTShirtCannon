@@ -66,6 +66,7 @@ public class RobotParams
         
         // Subsystems
         public static final boolean useSubsystems               = true;
+        public static final boolean useTilter                   = true;
         public static final boolean tilterIsInverted            = false;
         // Miscellaneous
         public static final boolean useTraceLog                 = true;

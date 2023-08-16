@@ -39,6 +39,7 @@ public class FrcTeleOp implements TrcRobot.RobotMode
     //
     protected final Robot robot;
     private boolean controlsEnabled = false;
+    private boolean manualOverride = false;
 
     /**
      * Constructor: Create an instance of the object.
@@ -138,8 +139,17 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 //
                 if (RobotParams.Preferences.useSubsystems)
                 {
-                    double tilterRotPower =  robot.driverController.getRightTriggerAxis() - robot.driverController.getLeftTriggerAxis();
-                    robot.tilter.setPidPower(tilterRotPower, true);
+                    if (robot.tilter != null)
+                    {
+                        double tilterRotPower =  robot.driverController.getRightTriggerWithDeadband(true) - robot.driverController.getLeftTriggerWithDeadband(true);
+                        if (manualOverride)
+                        {
+                            robot.tilter.setPower(tilterRotPower);
+                        }else
+                        {
+                            robot.tilter.setPidPower(tilterRotPower, true);
+                        }
+                    }
                 }
             }
             //
@@ -229,12 +239,17 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 break;
 
             case FrcXboxController.LEFT_BUMPER:
-                // Inverted drive only makes sense for robot oriented driving.
+
+                manualOverride = pressed;
+                
+               // Inverted drive only makes sense for robot oriented driving.
+                /*
                 if (robot.robotDrive.driveOrientation == RobotDrive.DriveOrientation.ROBOT)
                 {
                     robot.robotDrive.setDriveOrientation(
                         pressed? RobotDrive.DriveOrientation.INVERTED: RobotDrive.DriveOrientation.ROBOT);
                 }
+                */
                 break;
 
             case FrcXboxController.RIGHT_BUMPER:

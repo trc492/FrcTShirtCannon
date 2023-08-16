@@ -182,6 +182,8 @@ public class Robot extends FrcRobotBase
         //
         if (RobotParams.Preferences.useSubsystems)
         {
+            if (RobotParams.Preferences.useTilter)
+            {
             TrcPidActuator.Parameters tilterParams = new TrcPidActuator.Parameters()
                 .setPidParams(RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD, RobotParams.TILTER_KF, 0, RobotParams.TILTER_TOLERANCE);
             tilterMotor = new FrcCANTalon("tilterMotor", RobotParams.CANID_TILTER_MOTOR);
@@ -189,6 +191,7 @@ public class Robot extends FrcRobotBase
             tilterLowerLimit = new FrcDigitalInput("tilterLowerLimit", RobotParams.DIN_TILTER_LOWER_LIMIT);
             tilterUpperLimit = new FrcDigitalInput("tilterUpperLimit", RobotParams.DIN_TILTER_UPPER_LIMIT);
             tilter = new TrcPidActuator("tilter", tilterMotor, tilterLowerLimit, tilterUpperLimit, tilterParams);
+            }
         }
         //
         // Miscellaneous.
