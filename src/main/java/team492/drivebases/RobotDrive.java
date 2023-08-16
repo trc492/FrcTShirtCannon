@@ -28,10 +28,9 @@ import java.io.FileReader;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import com.ctre.phoenix.ErrorCode;
-
 import TrcCommonLib.trclib.TrcDriveBase;
 import TrcCommonLib.trclib.TrcGyro;
+import TrcCommonLib.trclib.TrcMotor;
 import TrcCommonLib.trclib.TrcPidController;
 import TrcCommonLib.trclib.TrcPidDrive;
 import TrcCommonLib.trclib.TrcPose2D;
@@ -40,6 +39,8 @@ import TrcCommonLib.trclib.TrcUtil;
 import TrcCommonLib.trclib.TrcRobot.RunMode;
 import TrcFrcLib.frclib.FrcAHRSGyro;
 import TrcFrcLib.frclib.FrcCANFalcon;
+import TrcFrcLib.frclib.FrcCANSparkMax;
+import TrcFrcLib.frclib.FrcCANTalon;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import team492.FrcAuto;
@@ -52,6 +53,13 @@ import team492.RobotParams;
 public class RobotDrive
 {
     private static final String FIELD_ZERO_HEADING_FILE = "FieldZeroHeading.txt";
+
+    public enum MotorType
+    {
+        CAN_FALCON,
+        CAN_TALON,
+        CAN_SPARKMAX
+    }   //enum MotorType
 
     public enum DriveOrientation
     {
@@ -68,7 +76,7 @@ public class RobotDrive
     //
     // Drive motors.
     //
-    public FrcCANFalcon lfDriveMotor, lbDriveMotor, rfDriveMotor, rbDriveMotor;
+    public TrcMotor lfDriveMotor, lbDriveMotor, rfDriveMotor, rbDriveMotor;
     //
     // Drive Base.
     //
@@ -118,34 +126,22 @@ public class RobotDrive
             driveSpeedScale = RobotParams.DRIVE_FAST_SCALE;
             turnSpeedScale = RobotParams.TURN_FAST_SCALE;
             driveBase.setOdometryEnabled(true, true);
+            // Disable ramp rate control in autonomous.
+            double rampTime = runMode == RunMode.AUTO_MODE? 0.0: RobotParams.DRIVE_RAMP_RATE;
 
-            if (runMode == RunMode.AUTO_MODE)
+            lfDriveMotor.setOpenLoopRampRate(rampTime);
+            rfDriveMotor.setOpenLoopRampRate(rampTime);
+            if (lbDriveMotor != null)
             {
-                // Disable ramp rate control in autonomous.
-                lfDriveMotor.motor.configOpenloopRamp(0.0);
-                rfDriveMotor.motor.configOpenloopRamp(0.0);
-                if (lbDriveMotor != null)
-                {
-                    lbDriveMotor.motor.configOpenloopRamp(0.0);
-                }
-                if (rbDriveMotor != null)
-                {
-                    rbDriveMotor.motor.configOpenloopRamp(0.0);
-                }
+                lbDriveMotor.setOpenLoopRampRate(rampTime);
             }
-            else
+            if (rbDriveMotor != null)
             {
-                lfDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
-                rfDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
-                if (lbDriveMotor != null)
-                {
-                    lbDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
-                }
-                if (rbDriveMotor != null)
-                {
-                    rbDriveMotor.motor.configOpenloopRamp(RobotParams.DRIVE_RAMP_RATE);
-                }
+                rbDriveMotor.setOpenLoopRampRate(rampTime);
+            }
 
+            if (runMode != RunMode.AUTO_MODE)
+            {
                 if (runMode == RunMode.TELEOP_MODE && endOfAutoRobotPose != null)
                 {
                     driveBase.setFieldPosition(endOfAutoRobotPose);
@@ -211,33 +207,31 @@ public class RobotDrive
     /**
      * This method create a drive motor and configure it.
      *
+     * @param motorType specifies the drive motor type.
+     * @param brushless specifies true if drive motor is brushless, false if brushed (only applicable SparkMax).
      * @param name specifies the name of the drive motor.
      * @param motorCanID specifies the CAN ID of the drive motor.
      * @param inverted specifies true to invert the drive motor, false otherwise.
      */
-    protected FrcCANFalcon createDriveMotor(String name, int motorCanID, boolean inverted)
+    protected TrcMotor createDriveMotor(MotorType motorType, boolean brushless, String name, int motorCanID, boolean inverted)
     {
-        final String funcName = "createDriveMotor";
-        FrcCANFalcon driveMotor = new FrcCANFalcon(name, motorCanID);
-        ErrorCode errCode;
+        TrcMotor driveMotor = null;
 
-        errCode = driveMotor.motor.configFactoryDefault(10);
-        if (errCode != ErrorCode.OK)
+        if (motorType == MotorType.CAN_FALCON)
         {
-            robot.globalTracer.traceWarn(
-                funcName, "%s: Falcon.configFactoryDefault failed (code=%s).",
-                name, errCode);
+            driveMotor = new FrcCANFalcon(name, motorCanID);
+        }
+        else if (motorType == MotorType.CAN_TALON)
+        {
+            driveMotor = new FrcCANTalon(name, motorCanID);
+        }
+        else if (motorType == MotorType.CAN_SPARKMAX)
+        {
+            driveMotor = new FrcCANSparkMax(name, motorCanID, brushless);
         }
 
-        errCode = driveMotor.motor.configVoltageCompSaturation(RobotParams.BATTERY_NOMINAL_VOLTAGE, 10);
-        if (errCode != ErrorCode.OK)
-        {
-            robot.globalTracer.traceWarn(
-                funcName, "%s: Falcon.configVoltageCompSaturation failed (code=%s).",
-                name, errCode);
-        }
-
-        driveMotor.motor.enableVoltageCompensation(true);
+        driveMotor.resetFactoryDefault();
+        driveMotor.enableVoltageCompensation(RobotParams.BATTERY_NOMINAL_VOLTAGE);
         driveMotor.setMotorInverted(inverted);
         // Drive motor should always be in brake mode.
         driveMotor.setBrakeModeEnabled(true);

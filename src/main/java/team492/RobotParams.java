@@ -28,6 +28,7 @@ import TrcCommonLib.trclib.TrcUtil;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import team492.drivebases.RobotDrive.MotorType;
 
 /**
  * This class contains parameters and preferences related to all robot operations.
@@ -140,6 +141,7 @@ public class RobotParams
     public static final int CANID_RIGHTFRONT_DRIVE              = 4;
     public static final int CANID_LEFTBACK_DRIVE                = 5;
     public static final int CANID_RIGHTBACK_DRIVE               = 6;
+    public static final int CANID_TILTER_MOTOR                  = 7;
 
     // Applicable only for Swerve Drive.
     public static final int CANID_LEFTFRONT_STEER               = 13;
@@ -155,9 +157,6 @@ public class RobotParams
 
     public static final int CANID_PCM                           = 30;
     public static final int CANID_PDP                           = 31;
-
-    // Subsystem CAN IDs.
-    public static final int CANID_SHOOTER_MOTOR                  = 32;
     //
     // PDP Channels.
     //
@@ -191,8 +190,8 @@ public class RobotParams
     //
     // Digital Input/Output ports.
     //
-    public static final int DIN_SHOOTER_UPPER_LIMIT               = 4;
-    public static final int DIN_SHOOTER_LOWER_LIMIT               = 5;
+    public static final int DIN_TILTER_UPPER_LIMIT              = 4;
+    public static final int DIN_TILTER_LOWER_LIMIT              = 5;
     //
     // PWM channels.
     //
@@ -238,6 +237,8 @@ public class RobotParams
     //
     // DriveBase subsystem.
     //
+    public static final MotorType DRIVE_MOTOR_TYPE              = MotorType.CAN_SPARKMAX;
+    public static final boolean DRIVE_MOTOR_IS_BRUSHLESS        = true;
     // West Coast Drive Base (not used);
     public static final double WCD_INCHES_PER_COUNT             = 2.2421;
     public static final double WCD_KP                           = 0.011;

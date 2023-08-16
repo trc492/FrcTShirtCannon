@@ -22,7 +22,6 @@
 
 package team492;
 
-import java.lang.reflect.Parameter;
 import java.util.Locale;
 import TrcCommonLib.trclib.TrcDbgTrace;
 import TrcCommonLib.trclib.TrcPidActuator;
@@ -93,9 +92,9 @@ public class Robot extends FrcRobotBase
     //
     // Other subsystems.
     //
-    public FrcCANTalon shooterMotor;
-    public FrcDigitalInput shooterLowerLimit, shooterUpperLimit;
-    public TrcPidActuator shooterActuator;
+    public FrcCANTalon tilterMotor;
+    public FrcDigitalInput tilterLowerLimit, tilterUpperLimit;
+    public TrcPidActuator tilter;
 
     /**
      * Constructor: Create an instance of the object.
@@ -183,10 +182,11 @@ public class Robot extends FrcRobotBase
         //
         if (RobotParams.Preferences.useSubsystems)
         {
-            shooterMotor = new FrcCANTalon("shooterMotor", RobotParams.CANID_SHOOTER_MOTOR);
-            shooterLowerLimit = new FrcDigitalInput("shooterLowerLimit", RobotParams.DIN_SHOOTER_LOWER_LIMIT);
-            shooterUpperLimit = new FrcDigitalInput("shooterUpperLimit", RobotParams.DIN_SHOOTER_UPPER_LIMIT);
-            //shooterActuator = new TrcPidActuator("shooterActuator", shooterMotor, shooterLowerLimit, shooterUpperLimit, Parameter);
+            TrcPidActuator.Parameters tilterParams = new TrcPidActuator.Parameters();
+            tilterMotor = new FrcCANTalon("tilterMotor", RobotParams.CANID_TILTER_MOTOR);
+            tilterLowerLimit = new FrcDigitalInput("tilterLowerLimit", RobotParams.DIN_TILTER_LOWER_LIMIT);
+            tilterUpperLimit = new FrcDigitalInput("tilterUpperLimit", RobotParams.DIN_TILTER_UPPER_LIMIT);
+            // tilter = new TrcPidActuator("tilter", tilterMotor, tilterLowerLimit, tilterUpperLimit, tilterParams);
         }
         //
         // Miscellaneous.

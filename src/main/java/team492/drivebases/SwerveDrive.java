@@ -38,6 +38,7 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 
 import TrcCommonLib.trclib.TrcWatchdogMgr;
 import TrcCommonLib.trclib.TrcDbgTrace;
+import TrcCommonLib.trclib.TrcMotor;
 import TrcCommonLib.trclib.TrcPidController;
 import TrcCommonLib.trclib.TrcPidDrive;
 import TrcCommonLib.trclib.TrcPurePursuitDrive;
@@ -84,10 +85,18 @@ public class SwerveDrive extends RobotDrive
     {
         super(robot);
 
-        lfDriveMotor = createDriveMotor("lfDrive", RobotParams.CANID_LEFTFRONT_DRIVE, true);
-        rfDriveMotor = createDriveMotor("rfDrive", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
-        lbDriveMotor = createDriveMotor("lbDrive", RobotParams.CANID_LEFTBACK_DRIVE, true);
-        rbDriveMotor = createDriveMotor("rbDrive", RobotParams.CANID_RIGHTBACK_DRIVE, false);
+        lfDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "lfDrive", RobotParams.CANID_LEFTFRONT_DRIVE, true);
+        rfDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "rfDrive", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
+        lbDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "lbDrive", RobotParams.CANID_LEFTBACK_DRIVE, true);
+        rbDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "rbDrive", RobotParams.CANID_RIGHTBACK_DRIVE, false);
 
         // Steer zeros order: lf, rf, lb, rb.
         double[] zeros = getSteerZeroPositions();
@@ -349,7 +358,7 @@ public class SwerveDrive extends RobotDrive
      * @return the created swerve module.
      */
     private TrcSwerveModule createSwerveModule(
-        String name, FrcCANFalcon driveMotor, FrcCANFalcon steerMotor, FrcEncoder steerEncoder)
+        String name, TrcMotor driveMotor, TrcMotor steerMotor, FrcEncoder steerEncoder)
     {
         final String funcName = "createSwerveModule";
         // getPosition returns a value in the range of 0 to 1.0 of one revolution.

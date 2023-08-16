@@ -48,12 +48,20 @@ public class WestCoastDrive extends RobotDrive
     {
         super(robot);
 
-        lfDriveMotor = createDriveMotor("lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, true);
-        rfDriveMotor = createDriveMotor("rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
+        lfDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, true);
+        rfDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
         if (RobotParams.Preferences.use4WheelWestCoastDrive)
         {
-            lbDriveMotor = createDriveMotor("lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, true);
-            rbDriveMotor = createDriveMotor("rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, false);
+            lbDriveMotor = createDriveMotor(
+                RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+                "lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, true);
+            rbDriveMotor = createDriveMotor(
+                RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+                "rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, false);
             lbDriveMotor.followMotor(lfDriveMotor);
             rbDriveMotor.followMotor(rfDriveMotor);
         }

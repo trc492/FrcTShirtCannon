@@ -48,10 +48,18 @@ public class MecanumDrive extends RobotDrive
     {
         super(robot);
 
-        lfDriveMotor = createDriveMotor("lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, false);
-        lbDriveMotor = createDriveMotor("lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, false);
-        rfDriveMotor = createDriveMotor("rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, true);
-        rbDriveMotor = createDriveMotor("rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, true);
+        lfDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, false);
+        lbDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, false);
+        rfDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, true);
+        rbDriveMotor = createDriveMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, true);
 
         driveBase = new TrcMecanumDriveBase(lfDriveMotor, lbDriveMotor, rfDriveMotor, rbDriveMotor, gyro);
         driveBase.setOdometryScales(RobotParams.MECANUM_X_INCHES_PER_COUNT, RobotParams.MECANUM_Y_INCHES_PER_COUNT);
