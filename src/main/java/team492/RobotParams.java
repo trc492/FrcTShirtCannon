@@ -67,6 +67,7 @@ public class RobotParams
         // Subsystems
         public static final boolean useSubsystems               = true;
         public static final boolean useTilter                   = true;
+        public static final boolean useCannon                   = true;
         public static final boolean tilterIsInverted            = false;
         // Miscellaneous
         public static final boolean useTraceLog                 = true;
@@ -206,6 +207,9 @@ public class RobotParams
     //
     // Pneumatic channels.
     //
+    public static final int PNEU_LEFT_CANNON                    = 0;
+    public static final int PNEU_MID_CANNON                     = 1;
+    public static final int PNEU_RIGHT_CANNON                   = 2;
 
     //
     // Ultrasonic sensors.
@@ -357,7 +361,10 @@ public class RobotParams
     //
     // Other subsystems.
     //
-    
+        // cannon subsystem
+    //
+    public static final double CANNON_EXTEND_PERIOD             = 0.1;
+
     // Tilter Subsystem.
     public static final double TILTER_KP                        = 0.5;
     public static final double TILTER_KI                        = 0.0;
