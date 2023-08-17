@@ -231,34 +231,34 @@ public class FrcTeleOp implements TrcRobot.RobotMode
 
             case FrcXboxController.BUTTON_B:
                 if(pressed)
+                {
+                    if(robot.rightCannon != null)
                     {
-                        if(robot.rightCannon != null)
-                        {
-                            robot.rightCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
-                        }
+                        robot.rightCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
-                    
+                }
+
                 break;
 
             case FrcXboxController.BUTTON_X:
                 if(pressed)
+                {
+                    if(robot.leftCannon != null)
                     {
-                        if(robot.leftCannon != null)
-                        {
-                            robot.leftCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
-                        }
+                        robot.leftCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
+                }
                 
                 break;
 
             case FrcXboxController.BUTTON_Y:
                 if(pressed)
+                {
+                    if(robot.midCannon != null)
                     {
-                        if(robot.midCannon != null)
-                        {
-                            robot.midCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
-                        }
+                        robot.midCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
+                }
 
                 break;
 
