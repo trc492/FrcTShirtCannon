@@ -230,42 +230,37 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 break;
 
             case FrcXboxController.BUTTON_B:
-                if(pressed)
+                if (pressed)
                 {
-                    if(robot.rightCannon != null)
+                    if (robot.rightCannon != null)
                     {
                         robot.rightCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
                 }
-
                 break;
 
             case FrcXboxController.BUTTON_X:
-                if(pressed)
+                if (pressed)
                 {
-                    if(robot.leftCannon != null)
+                    if (robot.leftCannon != null)
                     {
                         robot.leftCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
                 }
-                
                 break;
 
             case FrcXboxController.BUTTON_Y:
-                if(pressed)
+                if (pressed)
                 {
-                    if(robot.midCannon != null)
+                    if (robot.midCannon != null)
                     {
                         robot.midCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
                 }
-
                 break;
 
             case FrcXboxController.LEFT_BUMPER:
-
                 manualOverride = pressed;
-                
                 // Inverted drive only makes sense for robot oriented driving.
                 /*
                 if (robot.robotDrive.driveOrientation == RobotDrive.DriveOrientation.ROBOT)
@@ -290,6 +285,7 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 break;
 
             case FrcXboxController.BACK:
+                // Code review: Need to add zero calibrate code here for titler.
                 break;
 
             case FrcXboxController.START:
