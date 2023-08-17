@@ -38,6 +38,7 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 
 import TrcCommonLib.trclib.TrcWatchdogMgr;
 import TrcCommonLib.trclib.TrcDbgTrace;
+import TrcCommonLib.trclib.TrcEncoder;
 import TrcCommonLib.trclib.TrcMotor;
 import TrcCommonLib.trclib.TrcPidController;
 import TrcCommonLib.trclib.TrcPidDrive;
@@ -50,7 +51,8 @@ import TrcCommonLib.trclib.TrcWatchdogMgr.Watchdog;
 import TrcFrcLib.frclib.FrcAnalogEncoder;
 import TrcFrcLib.frclib.FrcCANCoder;
 import TrcFrcLib.frclib.FrcCANFalcon;
-import TrcFrcLib.frclib.FrcEncoder;
+import TrcFrcLib.frclib.FrcCANSparkMax;
+import TrcFrcLib.frclib.FrcCANTalon;
 import TrcFrcLib.frclib.FrcFalconServo;
 import TrcFrcLib.frclib.FrcPdp;
 import team492.Robot;
@@ -68,10 +70,10 @@ public class SwerveDrive extends RobotDrive
     //
     // Swerve steering motors and modules.
     //
-    public final FrcEncoder lfSteerEncoder, rfSteerEncoder, lbSteerEncoder, rbSteerEncoder;
-    public final FrcEncoder[] steerEncoders;
-    public final FrcCANFalcon lfSteerMotor, rfSteerMotor, lbSteerMotor, rbSteerMotor;
-    public final FrcCANFalcon[] steerMotors;
+    public final TrcEncoder lfSteerEncoder, rfSteerEncoder, lbSteerEncoder, rbSteerEncoder;
+    public final TrcEncoder[] steerEncoders;
+    public final TrcMotor lfSteerMotor, rfSteerMotor, lbSteerMotor, rbSteerMotor;
+    public final TrcMotor[] steerMotors;
     public final TrcSwerveModule lfWheel, lbWheel, rfWheel, rbWheel;
     private String antiDefenseOwner = null;
     private boolean steerEncodersSynced = false;
@@ -84,19 +86,6 @@ public class SwerveDrive extends RobotDrive
     public SwerveDrive(Robot robot)
     {
         super(robot);
-
-        lfDriveMotor = createDriveMotor(
-            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-            "lfDrive", RobotParams.CANID_LEFTFRONT_DRIVE, true);
-        rfDriveMotor = createDriveMotor(
-            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-            "rfDrive", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
-        lbDriveMotor = createDriveMotor(
-            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-            "lbDrive", RobotParams.CANID_LEFTBACK_DRIVE, true);
-        rbDriveMotor = createDriveMotor(
-            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-            "rbDrive", RobotParams.CANID_RIGHTBACK_DRIVE, false);
 
         // Steer zeros order: lf, rf, lb, rb.
         double[] zeros = getSteerZeroPositions();
@@ -126,14 +115,22 @@ public class SwerveDrive extends RobotDrive
         {
             throw new IllegalArgumentException("Must enable either useCANCoder or useAnalogEncoder.");
         }
-        steerEncoders = new FrcEncoder[] {lfSteerEncoder, rfSteerEncoder, lbSteerEncoder, rbSteerEncoder};
+        steerEncoders = new TrcEncoder[] {lfSteerEncoder, rfSteerEncoder, lbSteerEncoder, rbSteerEncoder};
 
-        lfSteerMotor = createSteerMotor("lfSteer", RobotParams.CANID_LEFTFRONT_STEER, false);
-        rfSteerMotor = createSteerMotor("rfSteer", RobotParams.CANID_RIGHTFRONT_STEER, false);
-        lbSteerMotor = createSteerMotor("lbSteer", RobotParams.CANID_LEFTBACK_STEER, false);
-        rbSteerMotor = createSteerMotor("rbSteer", RobotParams.CANID_RIGHTBACK_STEER, false);
+        lfSteerMotor = createMotor(
+            RobotParams.STEER_MOTOR_TYPE, RobotParams.STEER_MOTOR_IS_BRUSHLESS,
+            "lfSteer", RobotParams.CANID_LEFTFRONT_STEER, false);
+        rfSteerMotor = createSteerMotor(
+            RobotParams.STEER_MOTOR_TYPE, RobotParams.STEER_MOTOR_IS_BRUSHLESS,
+            "rfSteer", RobotParams.CANID_RIGHTFRONT_STEER, false);
+        lbSteerMotor = createSteerMotor(
+            RobotParams.STEER_MOTOR_TYPE, RobotParams.STEER_MOTOR_IS_BRUSHLESS,
+            "lbSteer", RobotParams.CANID_LEFTBACK_STEER, false);
+        rbSteerMotor = createSteerMotor(
+            RobotParams.STEER_MOTOR_TYPE, RobotParams.STEER_MOTOR_IS_BRUSHLESS,
+            "rbSteer", RobotParams.CANID_RIGHTBACK_STEER, false);
 
-        steerMotors = new FrcCANFalcon[] {lfSteerMotor, rfSteerMotor, lbSteerMotor, rbSteerMotor};
+        steerMotors = new TrcMotor[] {lfSteerMotor, rfSteerMotor, lbSteerMotor, rbSteerMotor};
 
         lfWheel = createSwerveModule("lfWheel", lfDriveMotor, lfSteerMotor, lfSteerEncoder);
         rfWheel = createSwerveModule("rfWheel", rfDriveMotor, rfSteerMotor, rfSteerEncoder);
@@ -245,10 +242,10 @@ public class SwerveDrive extends RobotDrive
      * @param steerZero specifies the zero position.
      * @return the created steering encoder.
      */
-    private FrcEncoder createCANCoder(String name, int encoderId, boolean inverted, double steerZero)
+    private TrcEncoder createCANCoder(String name, int encoderId, boolean inverted, double steerZero)
     {
         final String funcName = "createCANcoder";
-        FrcEncoder encoder = new FrcCANCoder(name, encoderId);
+        TrcEncoder encoder = new FrcCANCoder(name, encoderId);
 
         CANCoder canCoder = (CANCoder) encoder;
         ErrorCode errCode;
@@ -300,9 +297,9 @@ public class SwerveDrive extends RobotDrive
      * @param steerZero specifies the zero position.
      * @return the created steering encoder.
      */
-    private FrcEncoder createAnalogEncoder(String name, int encoderId, boolean inverted, double steerZero)
+    private TrcEncoder createAnalogEncoder(String name, int encoderId, boolean inverted, double steerZero)
     {
-        FrcEncoder encoder = new FrcAnalogEncoder(name, encoderId);
+        TrcEncoder encoder = new FrcAnalogEncoder(name, encoderId);
 
         encoder.setInverted(inverted);
         // Analog Encoder is already normalized to the range of 0 to 1.0 for a revolution (revolution per count).
@@ -313,35 +310,33 @@ public class SwerveDrive extends RobotDrive
     /**
      * This method creates a steering motor for a swerve module.
      *
+     * @param motorType specifies the drive motor type.
+     * @param brushless specifies true if drive motor is brushless, false if brushed (only applicable SparkMax).
      * @param name specifies the instance name of the steering motor.
      * @param motorCanID specifies the CAN ID of the steering motor.
      * @param inverted specifies true if the steering motor should be inverted, false otherwise.
      * @return the created steering motor.
      */
-    private FrcCANFalcon createSteerMotor(String name, int motorCanID, boolean inverted)
+    private TrcMotor createSteerMotor(
+        MotorType motorType, boolean brushless, String name, int motorCanID, boolean inverted)
     {
-        final String funcName = "createSteerMotor";
-        FrcCANFalcon steerMotor = new FrcCANFalcon(name, motorCanID);
-        ErrorCode errCode;
-        // Reset motor back to factory default to clear potential previous mis-configurations.
-        errCode = steerMotor.motor.configFactoryDefault(30);
-        if (errCode != ErrorCode.OK)
+        TrcMotor steerMotor = null;
+
+        if (motorType == MotorType.CAN_FALCON)
         {
-            robot.globalTracer.traceWarn(
-                funcName, "%s: Falcon.configFactoryDefault failed (code=%s).",
-                name, errCode);
+            steerMotor = new FrcCANFalcon(name, motorCanID);
+        }
+        else if (motorType == MotorType.CAN_TALON)
+        {
+            steerMotor = new FrcCANTalon(name, motorCanID);
+        }
+        else if (motorType == MotorType.CAN_SPARKMAX)
+        {
+            steerMotor = new FrcCANSparkMax(name, motorCanID, brushless);
         }
 
-        errCode = steerMotor.motor.configVoltageCompSaturation(RobotParams.BATTERY_NOMINAL_VOLTAGE, 30);
-        if (errCode != ErrorCode.OK)
-        {
-            robot.globalTracer.traceWarn(
-                funcName, "%s: Falcon.configVoltageCompSaturation failed (code=%s).",
-                name, errCode);
-        }
-
-        steerMotor.motor.enableVoltageCompensation(true);
-
+        steerMotor.resetFactoryDefault();
+        steerMotor.setVoltageCompensationEnabled(RobotParams.BATTERY_NOMINAL_VOLTAGE);
         steerMotor.setMotorInverted(inverted);
         steerMotor.setBrakeModeEnabled(true);
 
@@ -358,7 +353,7 @@ public class SwerveDrive extends RobotDrive
      * @return the created swerve module.
      */
     private TrcSwerveModule createSwerveModule(
-        String name, TrcMotor driveMotor, TrcMotor steerMotor, FrcEncoder steerEncoder)
+        String name, TrcMotor driveMotor, TrcMotor steerMotor, TrcEncoder steerEncoder)
     {
         final String funcName = "createSwerveModule";
         // getPosition returns a value in the range of 0 to 1.0 of one revolution.

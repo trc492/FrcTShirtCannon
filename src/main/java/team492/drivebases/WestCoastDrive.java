@@ -48,20 +48,8 @@ public class WestCoastDrive extends RobotDrive
     {
         super(robot);
 
-        lfDriveMotor = createDriveMotor(
-            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-            "lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, true);
-        rfDriveMotor = createDriveMotor(
-            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-            "rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
-        if (RobotParams.Preferences.use4WheelWestCoastDrive)
+        if (RobotParams.Preferences.useFourMotorDrive)
         {
-            lbDriveMotor = createDriveMotor(
-                RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-                "lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, true);
-            rbDriveMotor = createDriveMotor(
-                RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-                "rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, false);
             lbDriveMotor.followMotor(lfDriveMotor);
             rbDriveMotor.followMotor(rfDriveMotor);
         }
@@ -93,7 +81,7 @@ public class WestCoastDrive extends RobotDrive
 
         if (robot.pdp != null)
         {
-            if (RobotParams.Preferences.use4WheelWestCoastDrive)
+            if (RobotParams.Preferences.useFourMotorDrive)
             {
                 robot.pdp.registerEnergyUsed(
                     new FrcPdp.Channel(RobotParams.PDP_CHANNEL_LEFT_FRONT_DRIVE, "lfDriveMotor"),

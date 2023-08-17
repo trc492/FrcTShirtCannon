@@ -147,9 +147,9 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                             robot.tilter.setPower(tilterRotPower);
                         }else
                         {
-                            robot.tilter.setPidPower(tilterRotPower, true);
-                        }
-                    }
+                    robot.tilter.setPidPower(tilterRotPower, true);
+                }
+            }
                 }
             }
             //
@@ -242,7 +242,7 @@ public class FrcTeleOp implements TrcRobot.RobotMode
 
                 manualOverride = pressed;
                 
-               // Inverted drive only makes sense for robot oriented driving.
+                // Inverted drive only makes sense for robot oriented driving.
                 /*
                 if (robot.robotDrive.driveOrientation == RobotDrive.DriveOrientation.ROBOT)
                 {

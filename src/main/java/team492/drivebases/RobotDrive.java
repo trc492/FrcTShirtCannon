@@ -111,6 +111,21 @@ public class RobotDrive
     {
         this.robot = robot;
         gyro = RobotParams.Preferences.useNavX ? new FrcAHRSGyro("NavX", SPI.Port.kMXP) : null;
+        lfDriveMotor = createMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, true);
+        rfDriveMotor = createMotor(
+            RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+            "rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
+        if (RobotParams.Preferences.useFourMotorDrive)
+        {
+            lbDriveMotor = createMotor(
+                RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+                "lbDriveMotor", RobotParams.CANID_LEFTBACK_DRIVE, true);
+            rbDriveMotor = createMotor(
+                RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
+                "rbDriveMotor", RobotParams.CANID_RIGHTBACK_DRIVE, false);
+        }
     }   //RobotDrive
 
     /**
@@ -205,7 +220,7 @@ public class RobotDrive
     }   //cancel
 
     /**
-     * This method create a drive motor and configure it.
+     * This method create a drive or steer motor and configure it.
      *
      * @param motorType specifies the drive motor type.
      * @param brushless specifies true if drive motor is brushless, false if brushed (only applicable SparkMax).
@@ -213,31 +228,31 @@ public class RobotDrive
      * @param motorCanID specifies the CAN ID of the drive motor.
      * @param inverted specifies true to invert the drive motor, false otherwise.
      */
-    protected TrcMotor createDriveMotor(MotorType motorType, boolean brushless, String name, int motorCanID, boolean inverted)
+    protected TrcMotor createMotor(
+        MotorType motorType, boolean brushless, String name, int motorCanID, boolean inverted)
     {
-        TrcMotor driveMotor = null;
+        TrcMotor motor = null;
 
         if (motorType == MotorType.CAN_FALCON)
         {
-            driveMotor = new FrcCANFalcon(name, motorCanID);
+            motor = new FrcCANFalcon(name, motorCanID);
         }
         else if (motorType == MotorType.CAN_TALON)
         {
-            driveMotor = new FrcCANTalon(name, motorCanID);
+            motor = new FrcCANTalon(name, motorCanID);
         }
         else if (motorType == MotorType.CAN_SPARKMAX)
         {
-            driveMotor = new FrcCANSparkMax(name, motorCanID, brushless);
+            motor = new FrcCANSparkMax(name, motorCanID, brushless);
         }
 
-        driveMotor.resetFactoryDefault();
-        driveMotor.enableVoltageCompensation(RobotParams.BATTERY_NOMINAL_VOLTAGE);
-        driveMotor.setMotorInverted(inverted);
-        // Drive motor should always be in brake mode.
-        driveMotor.setBrakeModeEnabled(true);
+        motor.resetFactoryDefault();
+        motor.setVoltageCompensationEnabled(RobotParams.BATTERY_NOMINAL_VOLTAGE);
+        motor.setMotorInverted(inverted);
+        motor.setBrakeModeEnabled(true);
 
-        return driveMotor;
-    }   //createDriveMotor
+        return motor;
+    }   //createMotor
 
     /**
      * This method reads various joystick/gamepad control values and returns the drive powers for all three degrees

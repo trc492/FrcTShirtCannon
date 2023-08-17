@@ -62,7 +62,7 @@ public class RobotParams
         public static final boolean useAntiTipping              = false;
         public static final boolean useSteeringCANCoder         = false;
         public static final boolean useSteeringAnalogEncoder    = true;
-        public static final boolean use4WheelWestCoastDrive     = false;
+        public static final boolean useFourMotorDrive           = false;
         
         // Subsystems
         public static final boolean useSubsystems               = true;
@@ -241,6 +241,8 @@ public class RobotParams
     //
     public static final MotorType DRIVE_MOTOR_TYPE              = MotorType.CAN_SPARKMAX;
     public static final boolean DRIVE_MOTOR_IS_BRUSHLESS        = true;
+    public static final MotorType STEER_MOTOR_TYPE              = MotorType.CAN_SPARKMAX;
+    public static final boolean STEER_MOTOR_IS_BRUSHLESS        = true;
     // West Coast Drive Base (not used);
     public static final double WCD_INCHES_PER_COUNT             = 2.2421;
     public static final double WCD_KP                           = 0.011;
@@ -356,11 +358,12 @@ public class RobotParams
     // Other subsystems.
     //
     
-    // Tilter Subsystem
-    public static final double TILTER_KP                      = 0.5;
-    public static final double TILTER_KI                      = 0;
-    public static final double TILTER_KD                      = 0;
-    public static final double TILTER_KF                      = 0;
-    public static final double TILTER_TOLERANCE               = 0;
+    // Tilter Subsystem.
+    public static final double TILTER_KP                        = 0.5;
+    public static final double TILTER_KI                        = 0.0;
+    public static final double TILTER_KD                        = 0.0;
+    public static final double TILTER_KF                        = 0.0;
+    public static final double TILTER_TOLERANCE                 = 0.0;
+    public static final boolean TILTER_MOTOR_INVERTED           = false;
 
 }   //class RobotParams
