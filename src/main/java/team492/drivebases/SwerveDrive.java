@@ -360,7 +360,7 @@ public class SwerveDrive extends RobotDrive
         double encoderPos = steerEncoder.getPosition();
 
         encoderPos *= RobotParams.STEER_MOTOR_CPR;
-        ErrorCode errCode = steerMotor.motor.setSelectedSensorPosition(encoderPos, 0, 30);
+        ErrorCode errCode = ((FrcCANFalcon) steerMotor).motor.setSelectedSensorPosition(encoderPos, 0, 30);
         if (errCode != ErrorCode.OK)
         {
             robot.globalTracer.traceWarn(
@@ -371,7 +371,7 @@ public class SwerveDrive extends RobotDrive
         // We have already synchronized the Falcon internal encoder with the zero adjusted absolute encoder, so
         // Falcon servo does not need to compensate for zero position.
         FrcFalconServo servo = new FrcFalconServo(
-            name + ".servo", steerMotor, RobotParams.steerCoeffs, RobotParams.STEER_DEGREES_PER_COUNT, 0.0,
+            name + ".servo", (FrcCANFalcon) steerMotor, RobotParams.steerCoeffs, RobotParams.STEER_DEGREES_PER_COUNT, 0.0,
             RobotParams.STEER_MAX_REQ_VEL, RobotParams.STEER_MAX_ACCEL);
         servo.setControlMode(TalonFXControlMode.MotionMagic);
         servo.setPhysicalRange(0.0, 360.0);
@@ -489,7 +489,7 @@ public class SwerveDrive extends RobotDrive
                 for (int i = 0; i < steerMotors.length; i++)
                 {
                     double encoderPos = steerEncoders[i].getPosition() * RobotParams.STEER_MOTOR_CPR;
-                    steerMotors[i].motor.setSelectedSensorPosition(encoderPos, 0, 0);
+                    ((FrcCANFalcon) steerMotors[i]).motor.setSelectedSensorPosition(encoderPos, 0, 0);
                     robot.globalTracer.traceInfo(
                         funcName, "[%.3f] syncSteerEncPos[%d]=%.0f", TrcTimer.getModeElapsedTime(), i, encoderPos);
             }
