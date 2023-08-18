@@ -24,7 +24,6 @@ package team492;
 
 import java.util.Locale;
 import TrcCommonLib.trclib.TrcDbgTrace;
-import TrcCommonLib.trclib.TrcPidActuator;
 import TrcCommonLib.trclib.TrcPidController;
 import TrcCommonLib.trclib.TrcPose2D;
 import TrcCommonLib.trclib.TrcRobotBattery;
@@ -94,9 +93,8 @@ public class Robot extends FrcRobotBase
     //
     // Other subsystems.
     //
-    public FrcCANTalon tilterMotor;
     public FrcDigitalInput tilterLowerLimit, tilterUpperLimit;
-    public TrcPidActuator tilter;
+    public FrcCANTalon tilter;
     public FrcPneumatic leftCannon;
     public FrcPneumatic midCannon;
     public FrcPneumatic rightCannon;
@@ -189,23 +187,23 @@ public class Robot extends FrcRobotBase
         {
             if (RobotParams.Preferences.useTilter)
             {
-                TrcPidActuator.Parameters tilterParams = new TrcPidActuator.Parameters()
-                    // .setScaleAndOffset()
-                    // .setPosRange()
-                    .setPidParams(RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD,
-                                  RobotParams.TILTER_KF, 0, RobotParams.TILTER_TOLERANCE);
-                    // .setZeroCalibratePower()
-                    // .resetPositionOnLowerLimit()
-                    // .setStallProtectionParams();
-                tilterMotor = new FrcCANTalon("tilterMotor", RobotParams.CANID_TILTER_MOTOR);
-                tilterMotor.resetFactoryDefault();
-                tilterMotor.setMotorInverted(RobotParams.TILTER_MOTOR_INVERTED);
-                tilterMotor.setVoltageCompensationEnabled(RobotParams.BATTERY_NOMINAL_VOLTAGE);
-                // Code Review: limit switches are not connected to DigitalInput, they are connected to the Talon (Hint: TrcMotorLimitSwitch)
-                // Please refer to Frc2023ChargedUp code subsystems/Arm.java.
+                // TrcPidActuator.Parameters tilterParams = new TrcPidActuator.Parameters()
+                //     // .setScaleAndOffset()
+                //     .setPidParams(RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD,
+                //                   RobotParams.TILTER_KF, 0, RobotParams.TILTER_TOLERANCE);
+                //     // .resetPositionOnLowerLimit()
+                //     // .setStallProtectionParams();
                 tilterLowerLimit = new FrcDigitalInput("tilterLowerLimit", RobotParams.DIN_TILTER_LOWER_LIMIT);
                 tilterUpperLimit = new FrcDigitalInput("tilterUpperLimit", RobotParams.DIN_TILTER_UPPER_LIMIT);
-                tilter = new TrcPidActuator("tilter", tilterMotor, tilterLowerLimit, tilterUpperLimit, tilterParams);
+
+                tilter = new FrcCANTalon(
+                    "tilterMotor", RobotParams.CANID_TILTER_MOTOR, tilterLowerLimit, tilterUpperLimit, null);
+                tilter.resetFactoryDefault();
+                tilter.setMotorInverted(RobotParams.TILTER_MOTOR_INVERTED);
+                tilter.setVoltageCompensationEnabled(RobotParams.BATTERY_NOMINAL_VOLTAGE);
+                tilter.setPositionPidCoefficients(new TrcPidController.PidCoefficients(
+                    RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD, RobotParams.TILTER_KF));
+                tilter.setPositionPidTolerance(RobotParams.TILTER_TOLERANCE);
             }
 
             if (RobotParams.Preferences.useCannon)

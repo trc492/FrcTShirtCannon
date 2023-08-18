@@ -145,11 +145,13 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                         if (manualOverride)
                         {
                             robot.tilter.setPower(tilterRotPower);
-                        }else
+                        }
+                        else
                         {
-                    robot.tilter.setPidPower(tilterRotPower, true);
-                }
-            }
+                            robot.tilter.setPidPower(
+                                tilterRotPower, RobotParams.TILTER_MIN_POS, RobotParams.TILTER_MAX_POS, true);
+                        }
+                    }
                 }
             }
             //

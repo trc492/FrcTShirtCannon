@@ -366,6 +366,8 @@ public class RobotParams
     public static final double TILTER_KF                        = 0.0;
     public static final double TILTER_TOLERANCE                 = 0.0;
     public static final boolean TILTER_MOTOR_INVERTED           = false;
+    public static final double TILTER_MIN_POS                   = 60.0;
+    public static final double TILTER_MAX_POS                   = 120.0;
     // Cannon subsystem.
     public static final double CANNON_EXTEND_PERIOD             = 0.1;
 
