@@ -201,9 +201,9 @@ public class Robot extends FrcRobotBase
                 tilter.resetFactoryDefault();
                 tilter.setMotorInverted(RobotParams.TILTER_MOTOR_INVERTED);
                 tilter.setVoltageCompensationEnabled(RobotParams.BATTERY_NOMINAL_VOLTAGE);
-                tilter.setPositionPidCoefficients(new TrcPidController.PidCoefficients(
-                    RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD, RobotParams.TILTER_KF));
-                tilter.setPositionPidTolerance(RobotParams.TILTER_TOLERANCE);
+                tilter.setPositionPidParameters(
+                    RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD, RobotParams.TILTER_KF,
+                    RobotParams.TILTER_IZONE, RobotParams.TILTER_TOLERANCE);
             }
 
             if (RobotParams.Preferences.useCannon)

@@ -364,6 +364,7 @@ public class RobotParams
     public static final double TILTER_KI                        = 0.0;
     public static final double TILTER_KD                        = 0.0;
     public static final double TILTER_KF                        = 0.0;
+    public static final double TILTER_IZONE                     = 0.0;
     public static final double TILTER_TOLERANCE                 = 0.0;
     public static final boolean TILTER_MOTOR_INVERTED           = false;
     public static final double TILTER_MIN_POS                   = 60.0;
