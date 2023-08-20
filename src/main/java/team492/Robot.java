@@ -165,7 +165,10 @@ public class Robot extends FrcRobotBase
             battery = new FrcRobotBattery(pdp);
         }
 
-        pressureSensor = new AnalogInput(RobotParams.AIN_PRESSURE_SENSOR);
+        if (RobotParams.Preferences.usePressureSensor)
+        {
+            pressureSensor = new AnalogInput(RobotParams.AIN_PRESSURE_SENSOR);
+        }
         //
         // Create and initialize miscellaneous hardware.
         //
@@ -209,11 +212,14 @@ public class Robot extends FrcRobotBase
             if (RobotParams.Preferences.useCannon)
             {
                 leftCannon = new FrcPneumatic(
-                    "leftCannon", RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_LEFT_CANNON);
+                    "leftCannon",
+                    RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_LEFT_CANNON);
                 midCannon = new FrcPneumatic(
-                    "midCannon", RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_MID_CANNON);
+                    "midCannon",
+                    RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_MID_CANNON);
                 rightCannon = new FrcPneumatic(
-                    "rightCannon", RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_RIGHT_CANNON);
+                    "rightCannon",
+                    RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_RIGHT_CANNON);
             }
         }
         //
@@ -345,7 +351,6 @@ public class Robot extends FrcRobotBase
                     dashboard.putNumber("DriveBase/AccelY", ((FrcAHRSGyro) robotDrive.gyro).ahrs.getWorldLinearAccelY());
                     dashboard.putNumber("DriveBase/AccelZ", ((FrcAHRSGyro) robotDrive.gyro).ahrs.getWorldLinearAccelZ());
                     dashboard.putNumber("DriverBase/Compass", ((FrcAHRSGyro) robotDrive.gyro).ahrs.getCompassHeading());
-
                     //
                     // DriveBase debug info.
                     //
@@ -466,7 +471,7 @@ public class Robot extends FrcRobotBase
      */
     public double getPressure()
     {
-        return (pressureSensor.getVoltage() - 0.5) * 50.0;
+        return pressureSensor != null? (pressureSensor.getVoltage() - 0.5) * 50.0: 0.0;
     }   //getPressure
 
 }   //class Robot

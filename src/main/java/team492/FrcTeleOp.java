@@ -236,7 +236,7 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 {
                     if (robot.rightCannon != null)
                     {
-                        robot.rightCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
+                        robot.rightCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
                 }
                 break;
@@ -246,7 +246,7 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 {
                     if (robot.leftCannon != null)
                     {
-                        robot.leftCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
+                        robot.leftCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
                 }
                 break;
@@ -256,7 +256,7 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 {
                     if (robot.midCannon != null)
                     {
-                        robot.midCannon.timedExtend(RobotParams.CANNON_EXTEND_PERIOD);
+                        robot.midCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
                 }
                 break;

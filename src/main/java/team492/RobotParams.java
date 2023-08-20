@@ -47,6 +47,7 @@ public class RobotParams
         // Sensors
         public static final boolean useNavX                     = true;
         public static final boolean usePdp                      = false;
+        public static final boolean usePressureSensor           = false;
         // Vision
         public static final boolean useVision                   = false;
         public static final boolean useLimeLightVision          = false;
@@ -157,8 +158,8 @@ public class RobotParams
     public static final int CANID_LEFTBACK_STEER_ENCODER        = 25;
     public static final int CANID_RIGHTBACK_STEER_ENCODER       = 26;
 
-    public static final int CANID_PCM                           = 30;
-    public static final int CANID_PDP                           = 31;
+    public static final int CANID_PCM                           = 62;
+    public static final int CANID_PDP                           = 63;
     //
     // PDP Channels.
     //
@@ -184,7 +185,7 @@ public class RobotParams
     //
     // Analog Input ports.
     //
-    public static final int AIN_PRESSURE_SENSOR                 = 9;
+    public static final int AIN_PRESSURE_SENSOR                 = 3;
     public static final int AIN_LEFTFRONT_STEER_ENCODER         = 0;    // Black
     public static final int AIN_RIGHTFRONT_STEER_ENCODER        = 1;    // Brown
     public static final int AIN_LEFTBACK_STEER_ENCODER          = 2;    // Red
