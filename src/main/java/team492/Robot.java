@@ -204,6 +204,8 @@ public class Robot extends FrcRobotBase
                 tilter.resetFactoryDefault();
                 tilter.setMotorInverted(RobotParams.TILTER_MOTOR_INVERTED);
                 tilter.setVoltageCompensationEnabled(RobotParams.BATTERY_NOMINAL_VOLTAGE);
+                tilter.disableMotorRevLimitSwitch();
+                tilter.disableMotorFwdLimitSwitch();
                 tilter.setPositionPidParameters(
                     RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD, RobotParams.TILTER_KF,
                     RobotParams.TILTER_IZONE, RobotParams.TILTER_TOLERANCE);

@@ -128,10 +128,20 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                     {
                         robot.robotDrive.driveBase.holonomicDrive(
                             null, inputs[0], inputs[1], inputs[2], robot.robotDrive.getDriveGyroAngle());
+                        robot.dashboard.displayPrintf(
+                            1, "Holonomic: x=%.3f, y=%.3f, rot=%.3f", inputs[0], inputs[1], inputs[2]);
+                    }
+                    else if (RobotParams.Preferences.useTankDrive)
+                    {
+                        robot.robotDrive.driveBase.tankDrive(inputs[0], inputs[1]);
+                        robot.dashboard.displayPrintf(
+                            1, "Tank: left=%.3f, right=%.3f, rot=%.3f", inputs[0], inputs[1], inputs[2]);
                     }
                     else
                     {
                         robot.robotDrive.driveBase.arcadeDrive(inputs[1], inputs[2]);
+                        robot.dashboard.displayPrintf(
+                            1, "Arcade: x=%.3f, y=%.3f, rot=%.3f", inputs[0], inputs[1], inputs[2]);
                     }
                 }
                 //
@@ -141,16 +151,22 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 {
                     if (robot.tilter != null)
                     {
-                        double tilterRotPower =  robot.driverController.getRightTriggerWithDeadband(true) - robot.driverController.getLeftTriggerWithDeadband(true);
+                        double tilterPower =
+                            robot.driverController.getRightTriggerWithDeadband(true) -
+                            robot.driverController.getLeftTriggerWithDeadband(true);
                         if (manualOverride)
                         {
-                            robot.tilter.setPower(tilterRotPower);
+                            robot.tilter.setPower(tilterPower);
                         }
                         else
                         {
                             robot.tilter.setPidPower(
-                                tilterRotPower, RobotParams.TILTER_MIN_POS, RobotParams.TILTER_MAX_POS, true);
+                                tilterPower, RobotParams.TILTER_MIN_POS, RobotParams.TILTER_MAX_POS, true);
                         }
+                        robot.dashboard.displayPrintf(
+                            2, "Tilter: power=%.3f, pos=%.3f, limitSw=%s/%s",
+                            tilterPower, robot.tilter.getPosition(),
+                            robot.tilter.isLowerLimitSwitchActive(), robot.tilter.isUpperLimitSwitchActive());
                     }
                 }
             }

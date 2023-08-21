@@ -42,8 +42,9 @@ public class RobotParams
     {
         // Inputs
         public static final boolean useDriverXboxController     = true;
+        public static final boolean useTankDrive                = true;
+        public static final boolean doOneStickDrive             = false;
         public static final boolean useButtonPanels             = false;
-        public static final boolean doOneStickDrive             = true;
         // Sensors
         public static final boolean useNavX                     = true;
         public static final boolean usePdp                      = false;
@@ -158,8 +159,8 @@ public class RobotParams
     public static final int CANID_LEFTBACK_STEER_ENCODER        = 25;
     public static final int CANID_RIGHTBACK_STEER_ENCODER       = 26;
 
-    public static final int CANID_PCM                           = 62;
-    public static final int CANID_PDP                           = 63;
+    public static final int CANID_PCM                           = 30;
+    public static final int CANID_PDP                           = 31;
     //
     // PDP Channels.
     //

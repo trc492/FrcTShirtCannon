@@ -116,7 +116,7 @@ public class RobotDrive
             "lfDriveMotor", RobotParams.CANID_LEFTFRONT_DRIVE, true);
         rfDriveMotor = createMotor(
             RobotParams.DRIVE_MOTOR_TYPE, RobotParams.DRIVE_MOTOR_IS_BRUSHLESS,
-            "rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, false);
+            "rfDriveMotor", RobotParams.CANID_RIGHTFRONT_DRIVE, true);
         if (RobotParams.Preferences.useFourMotorDrive)
         {
             lbDriveMotor = createMotor(
@@ -268,39 +268,61 @@ public class RobotDrive
 
         if (RobotParams.Preferences.useDriverXboxController)
         {
-            x = robot.driverController.getLeftXWithDeadband(false);
-            y = robot.driverController.getLeftYWithDeadband(false);
-            rot = robot.driverController.getRightXWithDeadband(true);
-        }
-        else
-        {
-            x = robot.rightDriveStick.getXWithDeadband(false);
-            y = robot.rightDriveStick.getYWithDeadband(false);
-            if(RobotParams.Preferences.doOneStickDrive)
+            if (RobotParams.Preferences.useTankDrive)
             {
-                rot = robot.rightDriveStick.getTwistWithDeadband(true);
+                x = robot.driverController.getLeftYWithDeadband(false);
+                y = robot.driverController.getRightYWithDeadband(false);
+                rot = robot.driverController.getRightXWithDeadband(true);
             }
             else
             {
-                rot = robot.leftDriveStick.getXWithDeadband(true);
+                x = robot.driverController.getLeftXWithDeadband(false);
+                y = robot.driverController.getLeftYWithDeadband(false);
+                rot = robot.driverController.getRightXWithDeadband(true);
             }
         }
-        // Apply squared or cubic curve to the X/Y drive.
-        mag = TrcUtil.magnitude(x, y);
-        if (mag > 1.0)
+        else
         {
-            x /= mag;
-            y /= mag;
-            mag = 1.0;
+            if (RobotParams.Preferences.useTankDrive)
+            {
+                x = robot.leftDriveStick.getYWithDeadband(false);
+                y = robot.rightDriveStick.getYWithDeadband(false);
+                rot = robot.rightDriveStick.getXWithDeadband(true);
+            }
+            else
+            {
+                x = robot.leftDriveStick.getXWithDeadband(false);
+                y = robot.leftDriveStick.getYWithDeadband(false);
+                if (RobotParams.Preferences.doOneStickDrive)
+                {
+                    rot = robot.leftDriveStick.getTwistWithDeadband(true);
+                }
+                else
+                {
+                    rot = robot.rightDriveStick.getXWithDeadband(true);
+                }
+            }
         }
-        newMag = Math.pow(mag, RobotParams.Preferences.useDriverXboxController? 3: 2);
-        newMag *= driveSpeedScale;
-        rot *= turnSpeedScale;
 
-        if (mag != 0.0)
+        if (!RobotParams.Preferences.useTankDrive)
         {
-            x *= newMag / mag;
-            y *= newMag / mag;
+            // Apply squared or cubic curve to the X/Y drive.
+            mag = TrcUtil.magnitude(x, y);
+            if (mag > 1.0)
+            {
+                x /= mag;
+                y /= mag;
+                mag = 1.0;
+            }
+            newMag = Math.pow(mag, RobotParams.Preferences.useDriverXboxController? 3: 2);
+            newMag *= driveSpeedScale;
+            rot *= turnSpeedScale;
+
+            if (mag != 0.0)
+            {
+                x *= newMag / mag;
+                y *= newMag / mag;
+            }
         }
 
         return new double[] { x, y, rot };
