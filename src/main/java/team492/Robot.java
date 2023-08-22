@@ -190,25 +190,23 @@ public class Robot extends FrcRobotBase
         {
             if (RobotParams.Preferences.useTilter)
             {
-                // TrcPidActuator.Parameters tilterParams = new TrcPidActuator.Parameters()
-                //     // .setScaleAndOffset()
-                //     .setPidParams(RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD,
-                //                   RobotParams.TILTER_KF, 0, RobotParams.TILTER_TOLERANCE);
-                //     // .resetPositionOnLowerLimit()
-                //     // .setStallProtectionParams();
+                // Create external limit switches on DIO channels.
                 tilterLowerLimit = new FrcDigitalInput("tilterLowerLimit", RobotParams.DIN_TILTER_LOWER_LIMIT);
                 tilterUpperLimit = new FrcDigitalInput("tilterUpperLimit", RobotParams.DIN_TILTER_UPPER_LIMIT);
 
                 tilter = new FrcCANTalon(
                     "tilterMotor", RobotParams.CANID_TILTER_MOTOR, tilterLowerLimit, tilterUpperLimit, null);
                 tilter.resetFactoryDefault();
-                tilter.setMotorInverted(RobotParams.TILTER_MOTOR_INVERTED);
                 tilter.setVoltageCompensationEnabled(RobotParams.BATTERY_NOMINAL_VOLTAGE);
-                tilter.disableMotorRevLimitSwitch();
-                tilter.disableMotorFwdLimitSwitch();
+                tilter.setBrakeModeEnabled(true);
+                tilter.disableMotorRevLimitSwitch();    // Disable onboard reverse limit switch on motor controller.
+                tilter.disableMotorFwdLimitSwitch();    // Disable onboard forward limit switch on motor controller.
+                tilter.setMotorInverted(RobotParams.TILTER_MOTOR_INVERTED);
                 tilter.setPositionPidParameters(
                     RobotParams.TILTER_KP, RobotParams.TILTER_KI, RobotParams.TILTER_KD, RobotParams.TILTER_KF,
                     RobotParams.TILTER_IZONE, RobotParams.TILTER_TOLERANCE);
+                // setScaleAndOffset()
+                // resetPositionOnLowerLimit()
             }
 
             if (RobotParams.Preferences.useCannon)
