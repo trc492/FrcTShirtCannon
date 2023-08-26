@@ -214,12 +214,18 @@ public class Robot extends FrcRobotBase
                 leftCannon = new FrcPneumatic(
                     "leftCannon",
                     RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_LEFT_CANNON);
+                leftCannon.setInverted(true);
+                leftCannon.extend(false);
                 midCannon = new FrcPneumatic(
                     "midCannon",
                     RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_MID_CANNON);
+                midCannon.setInverted(true);
+                midCannon.extend(false);
                 rightCannon = new FrcPneumatic(
                     "rightCannon",
                     RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_RIGHT_CANNON);
+                rightCannon.setInverted(true);
+                rightCannon.extend(false);
             }
         }
         //

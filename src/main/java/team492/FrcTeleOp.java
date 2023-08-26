@@ -168,6 +168,13 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                             tilterPower, robot.tilter.getPosition(),
                             robot.tilter.isLowerLimitSwitchActive(), robot.tilter.isUpperLimitSwitchActive());
                     }
+
+                    if (robot.leftCannon != null && robot.midCannon != null && robot.rightCannon != null)
+                    {
+                        // robot.dashboard.displayPrintf(
+                        //     3, "Cannon: left=%x, mid=%x, right=%x",
+                        //     robot.leftCannon.get(), robot.midCannon.getExtendState(), robot.rightCannon.getExtendState());
+                    }
                 }
             }
             //
@@ -248,9 +255,10 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 break;
 
             case FrcXboxController.BUTTON_B:
-                if (pressed)
+                if (robot.rightCannon != null)
                 {
-                    if (robot.rightCannon != null)
+                    // robot.rightCannon.extend(pressed);
+                    if (pressed)
                     {
                         robot.rightCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
@@ -258,9 +266,10 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 break;
 
             case FrcXboxController.BUTTON_X:
-                if (pressed)
+                if (robot.leftCannon != null)
                 {
-                    if (robot.leftCannon != null)
+                    // robot.leftCannon.extend(pressed);
+                    if (pressed)
                     {
                         robot.leftCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
@@ -268,9 +277,10 @@ public class FrcTeleOp implements TrcRobot.RobotMode
                 break;
 
             case FrcXboxController.BUTTON_Y:
-                if (pressed)
+                if (robot.midCannon != null)
                 {
-                    if (robot.midCannon != null)
+                    // robot.midCannon.extend(pressed);
+                    if (pressed)
                     {
                         robot.midCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
                     }
