@@ -204,13 +204,13 @@ public class RobotParams
     //
     // Relay channels.
     //
-
+    public static final int RELAY_LEFT_CANNON                   = 0;
+    public static final int RELAY_MID_CANNON                    = 1;
+    public static final int RELAY_RIGHT_CANNON                  = 2;
     //
     // Pneumatic channels.
     //
-    public static final int PNEU_LEFT_CANNON                    = 0;
-    public static final int PNEU_MID_CANNON                     = 1;
-    public static final int PNEU_RIGHT_CANNON                   = 2;
+
     //
     // Ultrasonic sensors.
     //
@@ -372,6 +372,6 @@ public class RobotParams
     public static final double TILTER_MIN_POS                   = 60.0;
     public static final double TILTER_MAX_POS                   = 120.0;
     // Cannon subsystem.
-    public static final double CANNON_EXTEND_PERIOD             = 0.1;
+    public static final double CANNON_FIRE_DURATION             = 0.1;
 
 }   //class RobotParams

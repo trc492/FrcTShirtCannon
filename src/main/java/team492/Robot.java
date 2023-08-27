@@ -36,15 +36,16 @@ import TrcFrcLib.frclib.FrcDigitalInput;
 import TrcFrcLib.frclib.FrcJoystick;
 import TrcFrcLib.frclib.FrcMatchInfo;
 import TrcFrcLib.frclib.FrcPdp;
-import TrcFrcLib.frclib.FrcPneumatic;
+import TrcFrcLib.frclib.FrcRelay;
 import TrcFrcLib.frclib.FrcRobotBase;
 import TrcFrcLib.frclib.FrcRobotBattery;
 import TrcFrcLib.frclib.FrcXboxController;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.Relay.Direction;
+import edu.wpi.first.wpilibj.Relay.Value;
 import team492.drivebases.RobotDrive;
 import team492.drivebases.WestCoastDrive;
 import team492.subsystems.LEDIndicator;
@@ -95,9 +96,9 @@ public class Robot extends FrcRobotBase
     //
     public FrcDigitalInput tilterLowerLimit, tilterUpperLimit;
     public FrcCANTalon tilter;
-    public FrcPneumatic leftCannon;
-    public FrcPneumatic midCannon;
-    public FrcPneumatic rightCannon;
+    public FrcRelay leftCannon;
+    public FrcRelay midCannon;
+    public FrcRelay rightCannon;
 
     /**
      * Constructor: Create an instance of the object.
@@ -211,21 +212,12 @@ public class Robot extends FrcRobotBase
 
             if (RobotParams.Preferences.useCannon)
             {
-                leftCannon = new FrcPneumatic(
-                    "leftCannon",
-                    RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_LEFT_CANNON);
-                leftCannon.setInverted(true);
-                leftCannon.extend(false);
-                midCannon = new FrcPneumatic(
-                    "midCannon",
-                    RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_MID_CANNON);
-                midCannon.setInverted(true);
-                midCannon.extend(false);
-                rightCannon = new FrcPneumatic(
-                    "rightCannon",
-                    RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, RobotParams.PNEU_RIGHT_CANNON);
-                rightCannon.setInverted(true);
-                rightCannon.extend(false);
+                leftCannon = new FrcRelay("leftCannon", RobotParams.RELAY_LEFT_CANNON, Direction.kForward);
+                midCannon = new FrcRelay("midCannon", RobotParams.RELAY_MID_CANNON, Direction.kForward);
+                rightCannon = new FrcRelay("rightCannon", RobotParams.RELAY_RIGHT_CANNON, Direction.kForward);
+                leftCannon.set(Value.kOff);
+                midCannon.set(Value.kOff);
+                rightCannon.set(Value.kOff);
             }
         }
         //

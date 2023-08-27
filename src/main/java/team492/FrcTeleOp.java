@@ -26,6 +26,7 @@ import TrcCommonLib.trclib.TrcRobot;
 import TrcCommonLib.trclib.TrcRobot.RunMode;
 import TrcFrcLib.frclib.FrcJoystick;
 import TrcFrcLib.frclib.FrcXboxController;
+import edu.wpi.first.wpilibj.Relay.Value;
 import team492.drivebases.RobotDrive;
 
 /**
@@ -257,10 +258,9 @@ public class FrcTeleOp implements TrcRobot.RobotMode
             case FrcXboxController.BUTTON_B:
                 if (robot.rightCannon != null)
                 {
-                    // robot.rightCannon.extend(pressed);
                     if (pressed)
                     {
-                        robot.rightCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
+                        robot.rightCannon.set(0.0, Value.kOn, RobotParams.CANNON_FIRE_DURATION);
                     }
                 }
                 break;
@@ -268,10 +268,9 @@ public class FrcTeleOp implements TrcRobot.RobotMode
             case FrcXboxController.BUTTON_X:
                 if (robot.leftCannon != null)
                 {
-                    // robot.leftCannon.extend(pressed);
                     if (pressed)
                     {
-                        robot.leftCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
+                        robot.leftCannon.set(0.0, Value.kOn, RobotParams.CANNON_FIRE_DURATION);
                     }
                 }
                 break;
@@ -279,10 +278,9 @@ public class FrcTeleOp implements TrcRobot.RobotMode
             case FrcXboxController.BUTTON_Y:
                 if (robot.midCannon != null)
                 {
-                    // robot.midCannon.extend(pressed);
                     if (pressed)
                     {
-                        robot.midCannon.extend(RobotParams.CANNON_EXTEND_PERIOD);
+                        robot.midCannon.set(0.0, Value.kOn, RobotParams.CANNON_FIRE_DURATION);
                     }
                 }
                 break;
