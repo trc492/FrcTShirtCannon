@@ -95,8 +95,6 @@ public class OpenCvVision extends FrcOpenCvDetector
      *
      * @param instanceName specifies the instance name.
      * @param numImageBuffers specifies the number of image buffers to allocate.
-     * @param imageWidth specifies the width of the camera image.
-     * @param imageHeight specifies the height of the camera image.
      * @param cameraRect specifies the camera rectangle for Homography Mapper, can be null if not provided.
      * @param worldRect specifies the world rectangle for Homography Mapper, can be null if not provided.
      * @param cvSink specifies the object to capture the video frames.
@@ -104,11 +102,10 @@ public class OpenCvVision extends FrcOpenCvDetector
      * @param tracer specifies the tracer for trace info, null if none provided.
      */
     public OpenCvVision(
-        String instanceName, int numImageBuffers, int imageWidth, int imageHeight,
-        TrcHomographyMapper.Rectangle cameraRect, TrcHomographyMapper.Rectangle worldRect,
-        CvSink cvSink, CvSource cvSource, TrcDbgTrace tracer)
+        String instanceName, int numImageBuffers, TrcHomographyMapper.Rectangle cameraRect,
+        TrcHomographyMapper.Rectangle worldRect, CvSink cvSink, CvSource cvSource, TrcDbgTrace tracer)
     {
-        super(instanceName, numImageBuffers, imageWidth, imageHeight,  cameraRect, worldRect, cvSink, cvSource,
+        super(instanceName, numImageBuffers, cameraRect, worldRect, cvSink, cvSource,
               tracer);
 
         this.tracer = tracer;
