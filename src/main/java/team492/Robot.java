@@ -214,6 +214,14 @@ public class Robot extends FrcRobotBase
 
             if (RobotParams.Preferences.useCannon)
             {
+                // We are using sprinkler valves which may draw more current than PCM can handle, therefore we
+                // installed an Enhanced FET driver board which can safely drive the sprinkler valves. Unfortunately,
+                // this inverted the penumatic control signals (i.e. energized channel will close the valves and
+                // de-energized channel will open the valves). This is not desirable. After some consideration, we
+                // decided to use the relay channels to control the Enhanced FET driver board which will give us
+                // non-inverted control. However, with no pneumatic channel, WPILib will not allocate and initialize
+                // PCM which means it won't turn on the compressor to fill the air tank. That's why we are creawting
+                // a dummy pneumatic channel here just to make WPILib turn on the compressor.
                 FrcPneumatic dummyPneumatic = new FrcPneumatic(
                     "DummyPneumatic", RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, 0);
                 dummyPneumatic.set(1, false);
