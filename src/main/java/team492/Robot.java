@@ -36,6 +36,7 @@ import TrcFrcLib.frclib.FrcDigitalInput;
 import TrcFrcLib.frclib.FrcJoystick;
 import TrcFrcLib.frclib.FrcMatchInfo;
 import TrcFrcLib.frclib.FrcPdp;
+import TrcFrcLib.frclib.FrcPneumatic;
 import TrcFrcLib.frclib.FrcRelay;
 import TrcFrcLib.frclib.FrcRobotBase;
 import TrcFrcLib.frclib.FrcRobotBattery;
@@ -43,6 +44,7 @@ import TrcFrcLib.frclib.FrcXboxController;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Relay.Direction;
 import edu.wpi.first.wpilibj.Relay.Value;
@@ -212,6 +214,10 @@ public class Robot extends FrcRobotBase
 
             if (RobotParams.Preferences.useCannon)
             {
+                FrcPneumatic dummyPneumatic = new FrcPneumatic(
+                    "DummyPneumatic", RobotParams.CANID_PCM, PneumaticsModuleType.CTREPCM, 0);
+                dummyPneumatic.set(1, false);
+
                 leftCannon = new FrcRelay("leftCannon", RobotParams.RELAY_LEFT_CANNON, Direction.kForward);
                 midCannon = new FrcRelay("midCannon", RobotParams.RELAY_MID_CANNON, Direction.kForward);
                 rightCannon = new FrcRelay("rightCannon", RobotParams.RELAY_RIGHT_CANNON, Direction.kForward);
